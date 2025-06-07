@@ -73,6 +73,7 @@ const Section: React.FC<SectionProps> = ({ title, backgroundColor }) => {
     setItems([...items, { name: newItemName, amount: parseFloat(newItemAmount), date: newItemDate }]);
     setNewItemName('');
     setNewItemAmount('');
+    setNewItemDate('');
     setIsAddingNewItem(false);
   };
 
