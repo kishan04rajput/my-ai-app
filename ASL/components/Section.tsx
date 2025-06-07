@@ -3,6 +3,21 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import EditItemModal from '../modals/EditItemModal';
 
+// Helper function to darken a color
+const getDarkerColor = (hex: string) => {
+  if (!hex) return '#f0f0f0';
+  let color = hex.substring(1);
+  let r = parseInt(color.substring(0, 2), 16);
+  let g = parseInt(color.substring(2, 4), 16);
+  let b = parseInt(color.substring(4, 6), 16);
+
+  r = Math.max(0, r - 20);
+  g = Math.max(0, g - 20);
+  b = Math.max(0, b - 20);
+
+  return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+};
+
 interface Item {
   name: string;
   amount: number;
@@ -11,9 +26,10 @@ interface Item {
 
 interface SectionProps {
   title: string;
+  backgroundColor?: string;
 }
 
-const Section: React.FC<SectionProps> = ({ title }) => {
+const Section: React.FC<SectionProps> = ({ title, backgroundColor }) => {
   const [isContentVisible, setIsContentVisible] = useState(false);
   const [items, setItems] = useState<Item[]>([]);
   const [isAddingNewItem, setIsAddingNewItem] = useState(false);
@@ -75,8 +91,8 @@ const Section: React.FC<SectionProps> = ({ title }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={[styles.container, { backgroundColor: backgroundColor || '#fff' }]}>
+      <View style={[styles.header, { backgroundColor: backgroundColor ? getDarkerColor(backgroundColor) : '#f0f0f0' }]}>
         <Text style={styles.headerText}>{title}</Text>
         <Pressable onPress={() => setIsContentVisible(!isContentVisible)}>
           <Text style={styles.toggleText}>{isContentVisible ? 'HIDE' : 'SHOW'}</Text>
@@ -170,7 +186,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 15,
-    backgroundColor: '#f0f0f0',
   },
   headerText: {
     fontSize: 18,

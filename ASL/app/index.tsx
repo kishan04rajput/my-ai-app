@@ -10,9 +10,9 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Section title="ASSETS" />
-      <Section title="SAVINGS" />
-      <Section title="LIABILITIES" />
+      <Section title="ASSETS" backgroundColor="#D4EDDA" />
+      <Section title="SAVINGS" backgroundColor="#CCE5FF" />
+      <Section title="LIABILITIES" backgroundColor="#F8D7DA" />
     </View>
   );
 }
