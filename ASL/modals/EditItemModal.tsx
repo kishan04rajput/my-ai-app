@@ -87,7 +87,7 @@ const EditItemModal: React.FC<EditItemModalProps> = ({
             <Pressable
               style={[styles.button, styles.buttonSave]}
               onPress={handleSave}>
-              <Text style={styles.textStyle}>SAVE</Text>
+              <Text style={styles.textStyle}>UPDATE</Text>
             </Pressable>
             <Pressable
               style={[styles.button, styles.buttonDelete]}
