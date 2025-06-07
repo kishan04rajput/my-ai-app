@@ -6,6 +6,7 @@ import DeleteItemModal from '../modals/DeleteItemModal';
 interface Item {
   name: string;
   amount: number;
+  date: string;
 }
 
 interface SectionProps {
@@ -19,6 +20,7 @@ const Section: React.FC<SectionProps> = ({ title }) => {
   const [newItemName, setNewItemName] = useState('');
   const [newItemAmount, setNewItemAmount] = useState('');
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [newItemDate, setNewItemDate] = useState('');
 
   // Load items from AsyncStorage when component mounts
   useEffect(() => {
@@ -48,11 +50,16 @@ const Section: React.FC<SectionProps> = ({ title }) => {
   }, [items, title]); // Runs whenever `items` or `title` changes
 
   const handleAddItem = () => {
+    const dateFormatRegex = /^\d{2}\/\d{2}$/;
     if (newItemName.trim() === '' || isNaN(parseFloat(newItemAmount))) {
       Alert.alert('Invalid Input', 'Please enter a valid name and amount.');
       return;
     }
-    setItems([...items, { name: newItemName, amount: parseFloat(newItemAmount) }]);
+    if (!dateFormatRegex.test(newItemDate)) {
+      Alert.alert('Invalid Date', 'Please enter the date in DD/MM format (e.g., 31/12).');
+      return;
+    }
+    setItems([...items, { name: newItemName, amount: parseFloat(newItemAmount), date: newItemDate }]);
     setNewItemName('');
     setNewItemAmount('');
     setIsAddingNewItem(false);
@@ -93,6 +100,12 @@ const Section: React.FC<SectionProps> = ({ title }) => {
               value={newItemAmount}
               onChangeText={setNewItemAmount}
             />
+            <TextInput
+              style={styles.input}
+              placeholder="Date"
+              value={newItemDate}
+              onChangeText={setNewItemDate}
+            />
             <View style={styles.buttonRow}>
               <Pressable onPress={handleAddItem} style={styles.saveButton}>
                 <Text style={styles.buttonText}>Save</Text>
@@ -101,6 +114,7 @@ const Section: React.FC<SectionProps> = ({ title }) => {
                 setIsAddingNewItem(false);
                 setNewItemName('');
                 setNewItemAmount('');
+                setNewItemDate('');
               }} style={styles.cancelButton}>
                 <Text style={styles.buttonText}>Cancel</Text>
               </Pressable>
@@ -117,6 +131,7 @@ const Section: React.FC<SectionProps> = ({ title }) => {
           >
             <View style={styles.itemRow}>
               <Text style={styles.itemName}>{item.name}</Text>
+              <Text style={styles.itemDate}>{item.date}</Text>
               <Text style={styles.itemAmount}>
                 {isContentVisible ? `₹${item.amount.toFixed(2)}` : 'XXXX'}
               </Text>
@@ -220,6 +235,11 @@ const styles = StyleSheet.create({
   },
   itemName: {
     fontSize: 16,
+  },
+  itemDate: {
+    fontSize: 16,
+    color: 'grey',
+    marginHorizontal: 10,
   },
   itemAmount: {
     fontSize: 16,
