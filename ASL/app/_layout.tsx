@@ -16,7 +16,13 @@ export default function RootLayout() {
       />
       <Tabs.Screen
         name="profile"
-        options={{ headerShown: false, title: "Profile" }}
+        options={{
+          headerShown: false,
+          title: "Profile",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="user-alt" size={size} color={color} />
+          ),
+        }}
       />
     </Tabs>
   );
