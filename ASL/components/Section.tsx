@@ -77,11 +77,6 @@ const Section: React.FC<SectionProps> = ({ title }) => {
       </View>
 
       <View style={styles.content}>
-        {items.length === 0 && !isAddingNewItem ? (
-          <Pressable onPress={() => setIsAddingNewItem(true)} style={styles.addButton}>
-            <Text style={styles.addButtonText}>Add</Text>
-          </Pressable>
-        ) : null}
 
         {isAddingNewItem ? (
           <View style={styles.addItemContainer}>
@@ -128,6 +123,9 @@ const Section: React.FC<SectionProps> = ({ title }) => {
             </View>
           </Pressable>
         ))}
+        <Pressable onPress={() => setIsAddingNewItem(true)} style={styles.addButton}>
+          <Text style={styles.addButtonText}>Add</Text>
+        </Pressable>
       </View>
 
       <DeleteItemModal
