@@ -5,3 +5,4 @@ alwaysApply: true
 ---
 - this is a react native project named "ASL"
 - always use tab navigation in "_layout" file
+- when implementing modal, make modal like this that when user clicks on the outside of the modal the modal should close automatically

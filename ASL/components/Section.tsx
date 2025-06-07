@@ -12,7 +12,7 @@ interface SectionProps {
 }
 
 const Section: React.FC<SectionProps> = ({ title }) => {
-  const [isContentVisible, setIsContentVisible] = useState(true);
+  const [isContentVisible, setIsContentVisible] = useState(false);
   const [items, setItems] = useState<Item[]>([]);
   const [isAddingNewItem, setIsAddingNewItem] = useState(false);
   const [newItemName, setNewItemName] = useState('');
