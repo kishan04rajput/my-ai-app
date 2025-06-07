@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import DeleteItemModal from '../modals/DeleteItemModal';
 
@@ -18,6 +19,33 @@ const Section: React.FC<SectionProps> = ({ title }) => {
   const [newItemName, setNewItemName] = useState('');
   const [newItemAmount, setNewItemAmount] = useState('');
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+
+  // Load items from AsyncStorage when component mounts
+  useEffect(() => {
+    const loadItems = async () => {
+      try {
+        const storedItems = await AsyncStorage.getItem(`@${title}_items`);
+        if (storedItems !== null) {
+          setItems(JSON.parse(storedItems));
+        }
+      } catch (error) {
+        console.error('Error loading items:', error);
+      }
+    };
+    loadItems();
+  }, []); // Empty dependency array means this runs once on mount
+
+  // Save items to AsyncStorage whenever the items state changes
+  useEffect(() => {
+    const saveItems = async () => {
+      try {
+        await AsyncStorage.setItem(`@${title}_items`, JSON.stringify(items));
+      } catch (error) {
+        console.error('Error saving items:', error);
+      }
+    };
+    saveItems();
+  }, [items, title]); // Runs whenever `items` or `title` changes
 
   const handleAddItem = () => {
     if (newItemName.trim() === '' || isNaN(parseFloat(newItemAmount))) {
@@ -48,61 +76,59 @@ const Section: React.FC<SectionProps> = ({ title }) => {
         </Pressable>
       </View>
 
-      {isContentVisible && (
-        <View style={styles.content}>
-          {items.length === 0 && !isAddingNewItem ? (
-            <Pressable onPress={() => setIsAddingNewItem(true)} style={styles.addButton}>
-              <Text style={styles.addButtonText}>Add</Text>
-            </Pressable>
-          ) : null}
+      <View style={styles.content}>
+        {items.length === 0 && !isAddingNewItem ? (
+          <Pressable onPress={() => setIsAddingNewItem(true)} style={styles.addButton}>
+            <Text style={styles.addButtonText}>Add</Text>
+          </Pressable>
+        ) : null}
 
-          {isAddingNewItem ? (
-            <View style={styles.addItemContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder="Name"
-                value={newItemName}
-                onChangeText={setNewItemName}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Amount"
-                keyboardType="numeric"
-                value={newItemAmount}
-                onChangeText={setNewItemAmount}
-              />
-              <View style={styles.buttonRow}>
-                <Pressable onPress={handleAddItem} style={styles.saveButton}>
-                  <Text style={styles.buttonText}>Save</Text>
-                </Pressable>
-                <Pressable onPress={() => {
-                  setIsAddingNewItem(false);
-                  setNewItemName('');
-                  setNewItemAmount('');
-                }} style={styles.cancelButton}>
-                  <Text style={styles.buttonText}>Cancel</Text>
-                </Pressable>
-              </View>
+        {isAddingNewItem ? (
+          <View style={styles.addItemContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Name"
+              value={newItemName}
+              onChangeText={setNewItemName}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Amount"
+              keyboardType="numeric"
+              value={newItemAmount}
+              onChangeText={setNewItemAmount}
+            />
+            <View style={styles.buttonRow}>
+              <Pressable onPress={handleAddItem} style={styles.saveButton}>
+                <Text style={styles.buttonText}>Save</Text>
+              </Pressable>
+              <Pressable onPress={() => {
+                setIsAddingNewItem(false);
+                setNewItemName('');
+                setNewItemAmount('');
+              }} style={styles.cancelButton}>
+                <Text style={styles.buttonText}>Cancel</Text>
+              </Pressable>
             </View>
-          ) : null}
+          </View>
+        ) : null}
 
-          {items.map((item, index) => (
-            <Pressable
-              key={index}
-              onLongPress={() => {
-                setSelectedItem(item);
-              }}
-            >
-              <View style={styles.itemRow}>
-                <Text style={styles.itemName}>{item.name}</Text>
-                <Text style={styles.itemAmount}>
-                  {isContentVisible ? `₹${item.amount.toFixed(2)}` : 'XXXX'}
-                </Text>
-              </View>
-            </Pressable>
-          ))}
-        </View>
-      )}
+        {items.map((item, index) => (
+          <Pressable
+            key={index}
+            onLongPress={() => {
+              setSelectedItem(item);
+            }}
+          >
+            <View style={styles.itemRow}>
+              <Text style={styles.itemName}>{item.name}</Text>
+              <Text style={styles.itemAmount}>
+                {isContentVisible ? `₹${item.amount.toFixed(2)}` : 'XXXX'}
+              </Text>
+            </View>
+          </Pressable>
+        ))}
+      </View>
 
       <DeleteItemModal
         isVisible={!!selectedItem}

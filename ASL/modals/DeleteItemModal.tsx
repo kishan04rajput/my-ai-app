@@ -31,7 +31,7 @@ const DeleteItemModal: React.FC<DeleteItemModalProps> = ({ isVisible, onClose, o
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={onClose}>
-              <Text style={styles.textStyle}>X</Text>
+              <Text style={styles.textStyle}>CANCEL</Text>
             </Pressable>
           </View>
         </View>
