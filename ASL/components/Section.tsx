@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import DeleteItemModal from '../modals/DeleteItemModal';
 
 interface Item {
   name: string;
@@ -16,17 +17,26 @@ const Section: React.FC<SectionProps> = ({ title }) => {
   const [isAddingNewItem, setIsAddingNewItem] = useState(false);
   const [newItemName, setNewItemName] = useState('');
   const [newItemAmount, setNewItemAmount] = useState('');
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
   const handleAddItem = () => {
     if (newItemName.trim() === '' || isNaN(parseFloat(newItemAmount))) {
-      // Basic validation
-      alert('Please enter a valid name and amount.');
+      Alert.alert('Invalid Input', 'Please enter a valid name and amount.');
       return;
     }
     setItems([...items, { name: newItemName, amount: parseFloat(newItemAmount) }]);
     setNewItemName('');
     setNewItemAmount('');
     setIsAddingNewItem(false);
+  };
+
+  const handleDeleteItem = () => {
+    if (selectedItem) {
+      setItems(items.filter(item => item !== selectedItem));
+      setSelectedItem(null);
+    }
+    // Close the modal after deletion
+    setSelectedItem(null);
   };
 
   return (
@@ -77,13 +87,29 @@ const Section: React.FC<SectionProps> = ({ title }) => {
           ) : null}
 
           {items.map((item, index) => (
-            <View key={index} style={styles.itemRow}>
-              <Text style={styles.itemName}>{item.name}</Text>
-              <Text style={styles.itemAmount}>${item.amount.toFixed(2)}</Text>
-            </View>
+            <Pressable
+              key={index}
+              onLongPress={() => {
+                setSelectedItem(item);
+              }}
+            >
+              <View style={styles.itemRow}>
+                <Text style={styles.itemName}>{item.name}</Text>
+                <Text style={styles.itemAmount}>
+                  {isContentVisible ? `₹${item.amount.toFixed(2)}` : 'XXXX'}
+                </Text>
+              </View>
+            </Pressable>
           ))}
         </View>
       )}
+
+      <DeleteItemModal
+        isVisible={!!selectedItem}
+        onClose={() => setSelectedItem(null)}
+        onDelete={handleDeleteItem}
+        selectedItem={selectedItem}
+      />
     </View>
   );
 };

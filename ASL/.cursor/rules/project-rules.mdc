@@ -3,4 +3,5 @@ description:
 globs: 
 alwaysApply: true
 ---
+- this is a react native project named "ASL"
 - always use tab navigation in "_layout" file
