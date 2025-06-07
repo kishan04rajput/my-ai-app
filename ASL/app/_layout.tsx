@@ -1,3 +1,4 @@
+import { FontAwesome5 } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 
 export default function RootLayout() {
@@ -5,7 +6,13 @@ export default function RootLayout() {
     <Tabs>
       <Tabs.Screen
         name="index"
-        options={{ headerShown: false, title: "ASL" }}
+        options={{ 
+          headerShown: false, 
+          title: "ASL",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="rupee-sign" size={size} color={color} />
+          ),
+        }}
       />
       <Tabs.Screen
         name="profile"
