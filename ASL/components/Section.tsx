@@ -108,7 +108,7 @@ const Section: React.FC<SectionProps> = ({ title }) => {
           </View>
         ) : null}
 
-        {items.map((item, index) => (
+        {isAddingNewItem ? null : items.map((item, index) => (
           <Pressable
             key={index}
             onLongPress={() => {
@@ -123,9 +123,11 @@ const Section: React.FC<SectionProps> = ({ title }) => {
             </View>
           </Pressable>
         ))}
-        <Pressable onPress={() => setIsAddingNewItem(true)} style={styles.addButton}>
-          <Text style={styles.addButtonText}>Add</Text>
-        </Pressable>
+        { !isAddingNewItem ? (
+          <Pressable onPress={() => setIsAddingNewItem(true)} style={styles.addButton}>
+            <Text style={styles.addButtonText}>Add</Text>
+          </Pressable>
+        ) : null}
       </View>
 
       <DeleteItemModal
