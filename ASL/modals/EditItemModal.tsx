@@ -66,25 +66,27 @@ const EditItemModal: React.FC<EditItemModalProps> = ({
       <Pressable style={styles.centeredView} onPress={onClose}>
         <View style={styles.modalView}>
           {selectedItem && (
-            <>
+            <View style={styles.inputRow}>
               <TextInput
-                style={styles.input}
+                style={[styles.input, styles.horizontalInput]}
                 value={editedName}
                 onChangeText={setEditedName}
+                placeholder="Name"
               />
               <TextInput
-                style={styles.input}
-                value={editedAmount}
-                onChangeText={setEditedAmount}
-                keyboardType="numeric"
-              />
-              <TextInput
-                style={styles.input}
+                style={[styles.input, styles.horizontalInput]}
                 value={editedDate}
                 onChangeText={setEditedDate}
                 placeholder="DD/MM"
+                          />
+                          <TextInput
+                style={[styles.input, styles.horizontalInput]}
+                value={editedAmount}
+                onChangeText={setEditedAmount}
+                keyboardType="numeric"
+                placeholder="Amount"
               />
-            </>
+            </View>
           )}
           <View style={styles.modalButtonContainer}>
             <Pressable
@@ -144,6 +146,17 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
     width: '100%',
+  },
+  inputRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: 10,
+  },
+  horizontalInput: {
+    flex: 1,
+    marginHorizontal: 5,
+    marginBottom: 0,
   },
   button: {
     borderRadius: 10,

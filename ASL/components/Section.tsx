@@ -50,13 +50,8 @@ const Section: React.FC<SectionProps> = ({ title }) => {
   }, [items, title]); // Runs whenever `items` or `title` changes
 
   const handleAddItem = () => {
-    const dateFormatRegex = /^\d{2}\/\d{2}$/;
     if (newItemName.trim() === '' || isNaN(parseFloat(newItemAmount))) {
       Alert.alert('Invalid Input', 'Please enter a valid name and amount.');
-      return;
-    }
-    if (!dateFormatRegex.test(newItemDate)) {
-      Alert.alert('Invalid Date', 'Please enter the date in DD/MM format (e.g., 31/12).');
       return;
     }
     setItems([...items, { name: newItemName, amount: parseFloat(newItemAmount), date: newItemDate }]);
