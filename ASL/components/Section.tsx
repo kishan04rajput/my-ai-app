@@ -92,6 +92,12 @@ const Section: React.FC<SectionProps> = ({ title }) => {
               placeholder="Name"
               value={newItemName}
               onChangeText={setNewItemName}
+                      />
+                      <TextInput
+              style={styles.input}
+              placeholder="Date"
+              value={newItemDate}
+              onChangeText={setNewItemDate}
             />
             <TextInput
               style={styles.input}
@@ -99,13 +105,7 @@ const Section: React.FC<SectionProps> = ({ title }) => {
               keyboardType="numeric"
               value={newItemAmount}
               onChangeText={setNewItemAmount}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Date"
-              value={newItemDate}
-              onChangeText={setNewItemDate}
-            />
+            />            
             <View style={styles.buttonRow}>
               <Pressable onPress={handleAddItem} style={styles.saveButton}>
                 <Text style={styles.buttonText}>Save</Text>
@@ -129,7 +129,7 @@ const Section: React.FC<SectionProps> = ({ title }) => {
               setSelectedItem(item);
             }}
           >
-            <View style={styles.itemRow}>
+            <View style={[styles.itemRow, index < items.length - 1 && styles.itemSeparator]}>
               <Text style={styles.itemName}>{item.name}</Text>
               <Text style={styles.itemDate}>{item.date}</Text>
               <Text style={styles.itemAmount}>
@@ -231,8 +231,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 8,
+  },
+  itemSeparator: {
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#ccc',
   },
   itemName: {
     fontSize: 16,

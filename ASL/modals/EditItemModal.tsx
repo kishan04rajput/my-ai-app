@@ -35,13 +35,8 @@ const EditItemModal: React.FC<EditItemModalProps> = ({
   }, [selectedItem]);
 
   const handleSave = () => {
-    const dateFormatRegex = /^\d{2}\/\d{2}$/;
     if (editedName.trim() === '' || isNaN(parseFloat(editedAmount))) {
       Alert.alert('Invalid Input', 'Please enter a valid name and amount.');
-      return;
-    }
-    if (!dateFormatRegex.test(editedDate)) {
-      Alert.alert('Invalid Date', 'Please enter the date in DD/MM format (e.g., 31/12).');
       return;
     }
 
