@@ -5,7 +5,7 @@ export default function RootLayout() {
     <Tabs>
       <Tabs.Screen
         name="index"
-        options={{ headerShown: false, title: "Home" }}
+        options={{ headerShown: false, title: "ASL" }}
       />
       <Tabs.Screen
         name="profile"
