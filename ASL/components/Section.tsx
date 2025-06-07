@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import DeleteItemModal from '../modals/DeleteItemModal';
+import EditItemModal from '../modals/EditItemModal';
 
 interface Item {
   name: string;
@@ -71,6 +71,11 @@ const Section: React.FC<SectionProps> = ({ title }) => {
       setSelectedItem(null);
     }
     // Close the modal after deletion
+    setSelectedItem(null);
+  };
+
+  const handleEditItem = (editedItem: Item) => {
+    setItems(items.map(item => (item === selectedItem ? editedItem : item)));
     setSelectedItem(null);
   };
 
@@ -145,10 +150,11 @@ const Section: React.FC<SectionProps> = ({ title }) => {
         ) : null}
       </View>
 
-      <DeleteItemModal
+      <EditItemModal
         isVisible={!!selectedItem}
         onClose={() => setSelectedItem(null)}
         onDelete={handleDeleteItem}
+        onSave={handleEditItem}
         selectedItem={selectedItem}
       />
     </View>
