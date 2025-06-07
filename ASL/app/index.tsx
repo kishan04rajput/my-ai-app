@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import Section from "../components/Section";
 
 export default function Index() {
   return (
@@ -9,7 +10,9 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Section title="ASSETS" />
+      <Section title="SAVINGS" />
+      <Section title="LIABILITIES" />
     </View>
   );
 }
