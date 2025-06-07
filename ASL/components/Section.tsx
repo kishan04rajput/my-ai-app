@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   saveButton: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#4CAF50',
     padding: 10,
     borderRadius: 5,
     flex: 1,
